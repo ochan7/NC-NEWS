@@ -17,5 +17,17 @@ module.exports = {
         if(err.name === 'CastError')   next({status: 404, message: 'ARTICLE_ID NOT FOUND'});
         else next(err);
       });
+  },
+  postComment: (req, res, next) => {
+    const {article_id} = req.params;
+    const {comment, created_by = 'northcoder'} = req.body;
+
+
+    const newComment = new Comments({body:comment, created_by, belongs_to: article_id});
+
+    newComment.save()
+      .then(data => {
+        res.status(201).send(data);
+      });
   }
 };

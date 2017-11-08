@@ -71,4 +71,16 @@ describe('API', () => {
         });
     });
   });
+  describe('POST api/:article_id/comments', () => {
+    it('it returns with a status code of 201 if successful', () => {
+      const article_id = usefulData.articles[0]._id;
+      const comment = 'this is a test comment';
+      return request(app)
+        .post(`/api/articles/${article_id}/comments`)
+        .send({
+          comment
+        })
+        .expect(201);
+    });
+  });
 });
