@@ -197,7 +197,7 @@ describe('API', () => {
         });
     });
   });
-  describe.only('PUT api/comments/:comment_id?vote=up', () => {
+  describe('PUT api/comments/:comment_id?vote=up', () => {
     it('it returns with a status code of 200 and an update comment', () => {
       const { _id: comment_id, votes: oldVotes} = usefulData.comments[0]; 
       return request(app)
@@ -207,10 +207,14 @@ describe('API', () => {
           const {comment} = body;
           expect(comment.votes).to.equal(oldVotes + 1);
         });
-        
+    });
+    it('it returns with a 404 status code if comment_id is not found', () => {
+      return request(app)
+        .put('/api/comments/adfadf?vote=up')
+        .expect(404);
     });
   });
-  describe.only('PUT api/comments/:comment_id?vote=down', () => {
+  describe('PUT api/comments/:comment_id?vote=down', () => {
     it('it returns with a status code of 200 and an update comment', () => {
       const { _id: comment_id, votes: oldVotes} = usefulData.comments[0]; 
       return request(app)
@@ -220,7 +224,11 @@ describe('API', () => {
           const {comment} = body;
           expect(comment.votes).to.equal(oldVotes - 1 );
         });
-        
+    });
+    it('it returns with a 404 status code if comment_id is not found', () => {
+      return request(app)
+        .put('/api/comments/adfadf?vote=up')
+        .expect(404);
     });
   });
 });

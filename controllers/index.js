@@ -79,6 +79,10 @@ module.exports = {
     Comments.findByIdAndUpdate(id, {$inc: {votes: increment}}, {new: true})
       .then(comment => {
         res.status(200).send({comment});
+      })
+      .catch(err => {
+        if(err.name === 'CastError') return next({status: 404, message: 'ARTICLE_ID NOT FOUND'});
+        return next(err);
       });
   }
 };
