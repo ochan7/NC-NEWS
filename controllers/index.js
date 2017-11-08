@@ -26,8 +26,8 @@ module.exports = {
     const newComment = new Comments({body:comment, created_by, belongs_to: article_id});
 
     newComment.save()
-      .then(data => {
-        res.status(201).send(data);
+      .then(comment => {
+        res.status(201).send({comment});
       });
   }
 };

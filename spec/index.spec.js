@@ -83,4 +83,17 @@ describe('API', () => {
         .expect(201);
     });
   });
+  it('returns the comment after successful post', () => {
+    const article_id = usefulData.articles[0]._id;
+    const comment = 'this is a test comment';
+    return request(app)
+      .post(`/api/articles/${article_id}/comments`)
+      .send({
+        comment
+      })
+      .then((res) => {
+        const {body} = res.body.comment;
+        expect(body).to.equal(comment);
+      });
+  });
 });
