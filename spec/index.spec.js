@@ -51,5 +51,15 @@ describe('API', () => {
         .get(`/api/articles/${article_id}/comments`)
         .expect(200);
     });
+    it('returns with an array of comments', () => {
+      const article_id = usefulData.articles[0]._id;
+      return request(app)
+        .get(`/api/articles/${article_id}/comments`)
+        .then(({body}) => {
+          const {comments} = body;
+          expect(comments).to.be.a('array');
+          expect(comments.length).to.equal(2);
+        });
+    });
   });
 });
