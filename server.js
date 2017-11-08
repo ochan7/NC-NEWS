@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 app.use('/api', apiRouter);
 app.use((err, req, res, next) => {
   if(err.status === 404) return res.status(404).send({message: err.message});
+  if(err.status === 400) return res.status(400).send({message: err.message});
   else return next(err);
 });
 app.use('/*', (req, res) => {
