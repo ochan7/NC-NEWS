@@ -1,4 +1,4 @@
-const {Articles, Comments, Topics} = require('../models/models');
+const {Articles, Comments, Topics, Users} = require('../models/models');
 
 module.exports = {
   getAllArticles: (req, res) => {
@@ -94,6 +94,12 @@ module.exports = {
       .catch(err => {
         if(err.name === 'CastError') return next({status: 404, message: 'COMMENT_ID NOT FOUND'});
         return next(err);
+      });
+  },
+  getAllUsers: (req, res, next) => {
+    Users.find()
+      .then(users => {
+        res.status(200).send({users});
       });
   }
 };

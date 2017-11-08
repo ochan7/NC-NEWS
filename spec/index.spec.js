@@ -231,7 +231,7 @@ describe('API', () => {
         .expect(404);
     });
   });
-  describe.only('DELETE api/comments/:comment_id', () => {
+  describe('DELETE api/comments/:comment_id', () => {
     it('returns a status code of 204', () => {
       const {_id: comment_id} = usefulData.comments[0];
       return request(app)
@@ -244,6 +244,29 @@ describe('API', () => {
         .expect(404)
         .then(({body}) => {
           expect(body.message).to.equal('COMMENT_ID NOT FOUND');
+        });
+    });
+  });
+  describe('GET api/user', () => {
+    it('returns a status code of 200 and an array of users', () => {  
+      return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then(({body}) => {
+          const {users} = body;
+          expect(users).to.be.an('array');
+        });
+    });
+  });
+  describe('GET api/user/:username', () => {
+    it('returns a status code of 200 and an array of length 1', () => {
+      const {username} = usefulData.users[0].username;
+      return request(app)
+        .get(`/api/users/${username}`)
+        .expect(200)
+        .then(({body}) => {
+          expect(body.users.length).to.equal(1);
+              
         });
     });
   });
