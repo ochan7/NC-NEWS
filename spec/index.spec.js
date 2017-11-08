@@ -110,4 +110,15 @@ describe('API', () => {
         expect(message).to.equal('INVALID INPUT');
       });
   });
+  it('returns with a 400 status code if posting with no comment', () => {
+    const article_id = usefulData.articles[0]._id;
+    return request(app)
+      .post(`/api/articles/${article_id}/comments`)
+      .send({})
+      .expect(400)
+      .then(res => {
+        const {message} = res.body;
+        expect(message).to.equal('INVALID INPUT');
+      });
+  });
 });
