@@ -44,4 +44,12 @@ describe('API', () => {
         });
     });
   });
+  describe('GET api/:article_id/comments', () => {
+    it('returns with a status code of 200 if successful', () => {
+      const article_id = usefulData.articles[0]._id;
+      return request(app)
+        .get(`/api/articles/${article_id}/comments`)
+        .expect(200);
+    });
+  });
 });
