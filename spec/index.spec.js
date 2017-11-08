@@ -258,16 +258,22 @@ describe('API', () => {
         });
     });
   });
-  describe('GET api/user/:username', () => {
+  describe.only('GET api/user/:username', () => {
     it('returns a status code of 200 and an array of length 1', () => {
-      const {username} = usefulData.users[0].username;
+      const {username} = usefulData.user;
       return request(app)
         .get(`/api/users/${username}`)
         .expect(200)
         .then(({body}) => {
           expect(body.users.length).to.equal(1);
-              
+          expect(body.users[0].username).to.equal(username);
         });
     });
+    it('returns a 404 if given a username that does not exist', () => {
+      return request(app)
+        .get('/api/users/asdfad')
+        .expect(404);
+    });
   });
+
 });
