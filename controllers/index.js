@@ -84,5 +84,16 @@ module.exports = {
         if(err.name === 'CastError') return next({status: 404, message: 'ARTICLE_ID NOT FOUND'});
         return next(err);
       });
+  },
+  deleteComment: (req, res, next) => {
+    const {comment_id: id} = req.params;
+    Comments.findByIdAndRemove(id)
+      .then(comment => {
+        res.status(204).send();
+      })
+      .catch(err => {
+        console.log(err.name);
+        next(err);
+      });
   }
 };

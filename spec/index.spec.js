@@ -231,4 +231,17 @@ describe('API', () => {
         .expect(404);
     });
   });
+  describe.only('DELETE api/comments/:comment_id', () => {
+    it('returns a status code of 204', () => {
+      const {_id: comment_id} = usefulData.comments[0];
+      return request(app)
+        .delete(`/api/comments/${comment_id}`)
+        .expect(204);
+    });
+    it('returns a status code of 404 if the comment cannot be found', () => {
+      return request(app)
+        .delete('/api/comments/notHere')
+        .expect(404);
+    });
+  });
 });

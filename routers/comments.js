@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const {putComment} = require('../controllers');
+const {putComment, deleteComment} = require('../controllers');
 router.route('/:comment_id')
-  .put(putComment);
-
+  .put(putComment)
+  .delete(deleteComment);
 module.exports = router;
