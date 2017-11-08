@@ -82,43 +82,64 @@ describe('API', () => {
         })
         .expect(201);
     });
+    it('returns the comment after successful post', () => {
+      const article_id = usefulData.articles[0]._id;
+      const comment = 'this is a test comment';
+      return request(app)
+        .post(`/api/articles/${article_id}/comments`)
+        .send({
+          comment
+        })
+        .then((res) => {
+          const {body} = res.body.comment;
+          expect(body).to.equal(comment);
+        });
+    });
+    it('returns with a 400 status code if posting an invalid comment', () => {
+      const article_id = usefulData.articles[0]._id;
+      const comment = '   ';
+      return request(app)
+        .post(`/api/articles/${article_id}/comments`)
+        .send({
+          comment
+        })
+        .expect(400)
+        .then(res => {
+          const {message} = res.body;
+          expect(message).to.equal('INVALID INPUT');
+        });
+    });
+    it('returns with a 400 status code if posting with no comment', () => {
+      const article_id = usefulData.articles[0]._id;
+      return request(app)
+        .post(`/api/articles/${article_id}/comments`)
+        .send({})
+        .expect(400)
+        .then(res => {
+          const {message} = res.body;
+          expect(message).to.equal('INVALID INPUT');
+        });
+    });
   });
-  it('returns the comment after successful post', () => {
-    const article_id = usefulData.articles[0]._id;
-    const comment = 'this is a test comment';
-    return request(app)
-      .post(`/api/articles/${article_id}/comments`)
-      .send({
-        comment
-      })
-      .then((res) => {
-        const {body} = res.body.comment;
-        expect(body).to.equal(comment);
-      });
-  });
-  it('returns with a 400 status code if posting an invalid comment', () => {
-    const article_id = usefulData.articles[0]._id;
-    const comment = '   ';
-    return request(app)
-      .post(`/api/articles/${article_id}/comments`)
-      .send({
-        comment
-      })
-      .expect(400)
-      .then(res => {
-        const {message} = res.body;
-        expect(message).to.equal('INVALID INPUT');
-      });
-  });
-  it('returns with a 400 status code if posting with no comment', () => {
-    const article_id = usefulData.articles[0]._id;
-    return request(app)
-      .post(`/api/articles/${article_id}/comments`)
-      .send({})
-      .expect(400)
-      .then(res => {
-        const {message} = res.body;
-        expect(message).to.equal('INVALID INPUT');
-      });
+  describe('PUT api/:article_id?vote=up', () => {
+    it('it returns with a status code of 200 if successful and the updated article', () => {
+      const article_id = usefulData.articles[0]._id;
+      const oldVotes = usefulData.articles[0].votes;
+      return request(app)
+        .put(`/api/articles/${article_id}?vote=up`)
+        .expect(200)
+        .then(res => {
+          const {votes} = res.body;
+          expect(votes).to.equal(oldVotes + 1);
+        });
+    });
+    it('it returns with a status code of 404 if the article_id is not found', () => {
+      return request(app)
+        .put('/api/articles/test?vote=up')
+        .expect(404)
+        .then(({body}) => {
+          expect(body.message).to.equal('ARTICLE_ID NOT FOUND');
+        });
+    });
   });
 });
