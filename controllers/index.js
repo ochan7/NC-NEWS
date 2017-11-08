@@ -92,8 +92,8 @@ module.exports = {
         res.status(204).send();
       })
       .catch(err => {
-        console.log(err.name);
-        next(err);
+        if(err.name === 'CastError') return next({status: 404, message: 'COMMENT_ID NOT FOUND'});
+        return next(err);
       });
   }
 };

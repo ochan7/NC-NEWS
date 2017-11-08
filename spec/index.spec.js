@@ -241,7 +241,10 @@ describe('API', () => {
     it('returns a status code of 404 if the comment cannot be found', () => {
       return request(app)
         .delete('/api/comments/notHere')
-        .expect(404);
+        .expect(404)
+        .then(({body}) => {
+          expect(body.message).to.equal('COMMENT_ID NOT FOUND');
+        });
     });
   });
 });
