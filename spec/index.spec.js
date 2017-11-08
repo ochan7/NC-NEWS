@@ -197,4 +197,30 @@ describe('API', () => {
         });
     });
   });
+  describe.only('PUT api/comments/:comment_id?vote=up', () => {
+    it('it returns with a status code of 200 and an update comment', () => {
+      const { _id: comment_id, votes: oldVotes} = usefulData.comments[0]; 
+      return request(app)
+        .put(`/api/comments/${comment_id}?vote=up`)
+        .expect(200)
+        .then(({body}) => {
+          const {comment} = body;
+          expect(comment.votes).to.equal(oldVotes + 1);
+        });
+        
+    });
+  });
+  describe.only('PUT api/comments/:comment_id?vote=down', () => {
+    it('it returns with a status code of 200 and an update comment', () => {
+      const { _id: comment_id, votes: oldVotes} = usefulData.comments[0]; 
+      return request(app)
+        .put(`/api/comments/${comment_id}?vote=down`)
+        .expect(200)
+        .then(({body}) => {
+          const {comment} = body;
+          expect(comment.votes).to.equal(oldVotes - 1 );
+        });
+        
+    });
+  });
 });
