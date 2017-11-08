@@ -58,5 +58,12 @@ module.exports = {
       .catch(err => {
         if(err) next(err);
       });
+  },
+  getArticlesByTopic: (req, res, next) => {
+    const {topic: belongs_to} = req.params;
+    Articles.find({belongs_to})
+      .then(articles => {
+        res.status(200).send({articles});
+      });
   }
 };
