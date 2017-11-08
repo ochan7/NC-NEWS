@@ -15,5 +15,5 @@ mongoose.connect(db, {useMongoClient: true})
   .catch(err => console.log('connection failed', err));
 
 app.use(bodyParser.json());
-
+app.use('/api', apiRouter)
 module.exports = app;
