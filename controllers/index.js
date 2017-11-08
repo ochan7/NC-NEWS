@@ -12,6 +12,10 @@ module.exports = {
     Comments.find({belongs_to})
       .then(comments => {
         res.status(200).send({comments});
+      })
+      .catch(err => {
+        if(err.name === 'CastError')   next({status: 404, message: 'ARTICLE_ID NOT FOUND'});
+        else next(err);
       });
   }
 };

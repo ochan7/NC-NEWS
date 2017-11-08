@@ -15,5 +15,12 @@ mongoose.connect(db, {useMongoClient: true})
   .catch(err => console.log('connection failed', err));
 
 app.use(bodyParser.json());
-app.use('/api', apiRouter)
+app.use('/api', apiRouter);
+app.use((err, req, res, next) => {
+  if(err.status === 404) return res.status(404).send({message: err.message});
+  else return next(err);
+});
+app.use('/*', (req, res) => {
+  res.status(404).send({message: 'Page not found'});
+});
 module.exports = app;

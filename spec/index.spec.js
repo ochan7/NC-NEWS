@@ -61,5 +61,14 @@ describe('API', () => {
           expect(comments.length).to.equal(2);
         });
     });
+    it('returns with a status code of 404 if given an invalid article_id', () => {
+      return request(app)
+        .get('/api/aricles/test/comments')
+        .expect(404)
+        .then(res => {
+          const {message} = res.body;
+          expect(message).to.eql( 'Page not found');
+        });
+    });
   });
 });
