@@ -33,5 +33,15 @@ describe('API', () => {
         .get('/api/articles')
         .expect(200);
     });
+    it('returns with an array of articles', () => {
+      return request(app)
+        .get('/api/articles')
+        .then(res => {
+          const {articles} = res.body;
+          expect(articles).to.be.an('array');
+          expect(articles[0].title).to.be.a('string');
+          expect(articles.length).to.equal(2);
+        });
+    });
   });
 });
