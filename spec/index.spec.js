@@ -183,9 +183,17 @@ describe('API', () => {
         .expect(200)
         .then(({body}) => {
           const {articles} = body;
-          console.log(articles);
           expect(articles).to.be.an('array');
           expect(articles[0].belongs_to).to.equal(topic);
+        });
+    });
+    it('it returns with a 404 error if given a topic that does not exist', () => {
+      return request(app)
+        .get('/api/topics/cheese/articles')
+        .expect(404)
+        .then(res => {
+          const {message} = res.body;
+          expect(message).to.equal('TOPIC DOES NOT EXIST');
         });
     });
   });
