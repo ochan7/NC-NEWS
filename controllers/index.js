@@ -1,4 +1,4 @@
-const {Articles, Comments} = require('../models/models');
+const {Articles, Comments, Topics} = require('../models/models');
 
 module.exports = {
   getAllArticles: (req, res) => {
@@ -48,6 +48,15 @@ module.exports = {
       .catch(err => {
         if(err.name === 'CastError') return next({status: 404, message: 'ARTICLE_ID NOT FOUND'});
         return next(err);
+      });
+  },
+  getAllTopics: (req, res, next) => {
+    Topics.find()
+      .then(topics => {
+        res.status(200).send({topics});
+      })
+      .catch(err => {
+        if(err) next(err);
       });
   }
 };

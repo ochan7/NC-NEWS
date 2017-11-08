@@ -6,4 +6,5 @@ router.route('/')
   });
 
 router.use('/articles', require('./articles'));
+router.use('/topics', require('./topics'));
 module.exports = router;

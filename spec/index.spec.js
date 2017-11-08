@@ -142,4 +142,37 @@ describe('API', () => {
         });
     });
   });
+  describe('PUT api/:article_id?vote=down', () => {
+    it('it returns with a status code of 200 if successful and the update article', () => {
+      const article_id = usefulData.articles[0]._id;
+      const oldVotes = usefulData.articles[0].votes;
+      return request(app)
+        .put(`/api/articles/${article_id}?vote=down`)
+        .expect(200)
+        .then(res => {
+          const {votes} = res.body;
+          expect(votes).to.equal(oldVotes - 1);
+        });
+    });
+    it('it returns with a status code of 404 if the article_id is not found', () => {
+      return request(app)
+        .put('/api/articles/test?vote=down')
+        .expect(404)
+        .then(({body}) => {
+          expect(body.message).to.equal('ARTICLE_ID NOT FOUND');
+        });
+    });
+  });
+  describe('GET api/topics', () => {
+    it('it returns with a status code of 200 and an array of topics', () => {
+      return request(app)
+        .get('/api/topics')
+        .expect(200)
+        .then(({body}) => {
+          const {topics} = body;
+          expect(topics).to.be.an('array');
+          expect(topics.length).to.equal(3);
+        });
+    });
+  });
 });
