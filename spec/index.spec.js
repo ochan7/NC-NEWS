@@ -129,7 +129,7 @@ describe('API', () => {
         .put(`/api/articles/${article_id}?vote=up`)
         .expect(200)
         .then(res => {
-          const {votes} = res.body;
+          const {votes} = res.body.article;
           expect(votes).to.equal(oldVotes + 1);
         });
     });
@@ -150,7 +150,7 @@ describe('API', () => {
         .put(`/api/articles/${article_id}?vote=down`)
         .expect(200)
         .then(res => {
-          const {votes} = res.body;
+          const {votes} = res.body.article;
           expect(votes).to.equal(oldVotes - 1);
         });
     });
@@ -258,7 +258,7 @@ describe('API', () => {
         });
     });
   });
-  describe.only('GET api/user/:username', () => {
+  describe('GET api/user/:username', () => {
     it('returns a status code of 200 and an array of length 1', () => {
       const {username} = usefulData.user;
       return request(app)

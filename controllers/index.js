@@ -44,7 +44,7 @@ module.exports = {
     else if(vote === 'down') increment = -1;
 
     Articles.findByIdAndUpdate(id, {$inc: {votes: increment}}, {new: true})
-      .then(comment => res.send(comment))
+      .then(article => res.send({article}))
       .catch(err => {
         if(err.name === 'CastError') return next({status: 404, message: 'ARTICLE_ID NOT FOUND'});
         return next(err);
