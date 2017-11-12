@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
+const cors = require('cors');
 const config = require('./config');
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 
@@ -15,6 +16,7 @@ mongoose.connect(db, {useMongoClient: true})
   .catch(err => console.log('connection failed', err));
 
 app.use(bodyParser.json());
+app.use(cors());
 app.use('/api', apiRouter);
 app.use((err, req, res, next) => {
   if(err.status === 404) return res.status(404).send({message: err.message});
