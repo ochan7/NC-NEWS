@@ -7,6 +7,16 @@ module.exports = {
         res.status(200).send({articles});
       });
   },
+  getArticle: (req, res, next) => {
+    const {article_id: id} = req.params;
+    Articles.findById(id)
+      .then(article => {
+        res.send({article});
+      })
+      .catch(err => {
+        if(err) return next(err);
+      });
+  },
   getComments: (req, res, next) => {
     const {article_id: belongs_to} = req.params;
     Comments.find({belongs_to})

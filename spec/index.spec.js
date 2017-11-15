@@ -44,6 +44,25 @@ describe('API', () => {
         });
     });
   });
+  describe('GET api/article/:article_id', () => {
+    it('returns with a status code of 200 if successful and the data', () => {
+      const article_id = usefulData.articles[0]._id;
+      return request(app)
+        .get(`/api/articles/${article_id}`)
+        .expect(200)
+        .then(({body: {article}}) => {
+          expect(article).to.be.an('object');
+        });
+    });
+    it('returns with a 404 if given article id is not found', () => {
+      return request(app)
+        .get('/api/aricles/test')
+        .expect(404)
+        .then(({body: {message}}) => {
+          expect(message).to.eql( 'Page not found');
+        });
+    });
+  });
   describe('GET api/:article_id/comments', () => {
     it('returns with a status code of 200 if successful', () => {
       const article_id = usefulData.articles[0]._id;
