@@ -30,11 +30,11 @@ module.exports = {
   },
   postComment: (req, res, next) => {
     const {article_id} = req.params;
-    const {comment, created_by = 'northcoder'} = req.body;
+    const {comment, created_by = 'northcoder', created_at = Date.now()} = req.body;
       
     if(/^\s*$/.test(comment)) return next({status: 400, message: 'INVALID INPUT'});
       
-    const newComment = new Comments({body:comment, created_by, belongs_to: article_id});
+    const newComment = new Comments({body:comment, created_by, belongs_to: article_id, created_at});
       
     newComment.save()
       .then(comment => {
