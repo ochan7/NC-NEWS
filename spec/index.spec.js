@@ -258,11 +258,17 @@ describe('API', () => {
         .expect(204);
     });
     it('returns a status code of 404 if the comment cannot be found', () => {
+      const {_id: comment_id} = usefulData.comments[0];
       return request(app)
-        .delete('/api/comments/notHere')
-        .expect(404)
-        .then(({body}) => {
-          expect(body.message).to.equal('COMMENT_ID NOT FOUND');
+        .delete(`/api/comments/${comment_id}`)
+        .expect(204)
+        .then(() => {
+          return request(app)
+            .delete(`/api/comments/${comment_id}`)
+            .expect(404)
+            .then(({body}) => {
+              expect(body.message).to.equal('COMMENT_ID NOT FOUND');
+            });
         });
     });
   });

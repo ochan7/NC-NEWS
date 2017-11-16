@@ -99,6 +99,7 @@ module.exports = {
     const {comment_id: id} = req.params;
     Comments.findByIdAndRemove(id)
       .then(comment => {
+        if(!comment) return next({status: 404, message: 'COMMENT_ID NOT FOUND'});
         res.status(204).send();
       })
       .catch(err => {
