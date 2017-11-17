@@ -272,7 +272,7 @@ describe('API', () => {
         });
     });
   });
-  describe('GET api/user', () => {
+  describe('GET api/users', () => {
     it('returns a status code of 200 and an array of users', () => {  
       return request(app)
         .get('/api/users')
@@ -300,5 +300,16 @@ describe('API', () => {
         .expect(404);
     });
   });
-
+  describe('GET api/user/:username/repos', () => {
+    it('returns a status code of 200 and an object containing articles and comments', () => {
+      const {username} = usefulData.user;
+      return request(app)
+        .get(`/api/users/${username}/repos`)
+        .expect(200)
+        .then(({body}) => {
+          expect(body.articles).to.be.an('array');
+          expect(body.comments).to.be.an('array');
+        });
+    });
+  });
 });
