@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
         comments: data[1]
       });
     })
-    .catch(err => {
+    .catch(() => {
       return next({status: 404, message: 'USERNAME NOT FOUND'});
     });
 };

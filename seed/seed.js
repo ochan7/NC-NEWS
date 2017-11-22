@@ -1,15 +1,15 @@
-var models = require('../models/models');
-var userData = require('./data/user_data.js');
-var articleData = require('./data/articles');
-var Chance = require('chance');
-var chance = new Chance();
-var _ = require('underscore');
-var async = require('async');
-var mongoose = require('mongoose');
-var log4js = require('log4js');
-var logger = log4js.getLogger();
-var moment = require('moment');
-var DBs = require('../config').DB;
+const models = require('../models');
+const userData = require('./data/user_data.js');
+const articleData = require('./data/articles');
+const Chance = require('chance');
+const chance = new Chance();
+const _ = require('underscore');
+const async = require('async');
+const mongoose = require('mongoose');
+const log4js = require('log4js');
+const logger = log4js.getLogger();
+const moment = require('moment');
+const DBs = require('../config').DB;
 
 mongoose.connect(DBs.dev, function (err) {
   if (!err) {
@@ -38,7 +38,7 @@ mongoose.connect(DBs.dev, function (err) {
 });
 
 function addNorthcoderUser(done) {
-  var userDoc = new models.Users(
+  const userDoc = new models.Users(
     {
       username: 'northcoder',
       name: 'Awesome Northcoder',
@@ -56,7 +56,7 @@ function addNorthcoderUser(done) {
 function addUsers(done) {
   logger.info('adding users');
   async.eachSeries(userData, function (user, cb) {
-    var userDoc = new models.Users(user);
+    const userDoc = new models.Users(user);
     userDoc.save(function (err) {
       if (err) {
         return cb(err);
@@ -71,13 +71,13 @@ function addUsers(done) {
 
 function addTopics(done) {
   logger.info('adding topics');
-  var topicDocs = [];
+  const topicDocs = [];
   async.eachSeries(['Football', 'Cooking', 'Coding'], function (topic, cb) {
-    var topicObj = {
+    const topicObj = {
       title: topic,
       slug: topic.toLowerCase()
     };
-    var topicDoc = new models.Topics(topicObj);
+    const topicDoc = new models.Topics(topicObj);
     topicDoc.save(function (err, doc) {
       if (err) {
         logger.error(JSON.stringify(err));
@@ -96,15 +96,15 @@ function addTopics(done) {
 function addArticles(topicDocs, done) {
   logger.info('adding articles');
   // will be a big array of strings
-  var docIds = [];
+  const docIds = [];
   async.eachSeries(topicDocs, function (topic, cb) {
-    var articles = articleData[topic.slug];
+    const articles = articleData[topic.slug];
     async.eachSeries(userData, function (user, cbTwo) {
-      var usersArticle = articles[0];
+      const usersArticle = articles[0];
       usersArticle.created_by = user.username;
       usersArticle.belongs_to = topic.slug;
       usersArticle.votes = _.sample(_.range(2, 11));
-      var usersArticleDoc = new models.Articles(usersArticle);
+      const usersArticleDoc = new models.Articles(usersArticle);
       usersArticleDoc.save(function (err, doc) {
         if (err) {
           logger.error(JSON.stringify(err));
@@ -112,11 +112,11 @@ function addArticles(topicDocs, done) {
         }
         articles.shift();
         docIds.push(doc._id);
-        var usersArticleTwo = articles[0];
+        const usersArticleTwo = articles[0];
         usersArticleTwo.created_by = user.username;
         usersArticleTwo.belongs_to = topic.slug;
         usersArticleTwo.votes = _.sample(_.range(2, 11));
-        var usersArticleTwoDoc = new models.Articles(usersArticleTwo);
+        const usersArticleTwoDoc = new models.Articles(usersArticleTwo);
         usersArticleTwoDoc.save(function (err, doc2) {
           if (err) {
             logger.error(JSON.stringify(err));
@@ -142,14 +142,14 @@ function addComments(docIds, done) {
   logger.info('adding comments');
   async.eachSeries(docIds, function (id, cb) {
     async.eachSeries(_.range(_.sample(_.range(5, 11))), function (x, cbTwo) {
-      var comment = {
+      const comment = {
         body: chance.paragraph({sentences: _.sample(_.range(2, 5))}),
         belongs_to: id,
         created_by: userData[_.sample(_.range(6))].username,
         votes: _.sample(_.range(2, 11)),
         created_at: getRandomStamp()
       };
-      var commentDoc = new models.Comments(comment);
+      const commentDoc = new models.Comments(comment);
       commentDoc.save(function (err) {
         if (err) {
           return cb(err);

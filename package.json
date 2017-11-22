@@ -4,7 +4,11 @@
   "description": "### Background",
   "main": "config.js",
   "scripts": {
+    "pretest": "npm run lint",
+    "lint": "eslint ./",
+    "lint:fix": "npm run lint -- --fix",
     "test": "mocha ./spec/*",
+    "precommit": "npm test",
     "start": "PORT=5000 node index.js"
   },
   "author": "",
@@ -23,7 +27,8 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^4.10.0",
+    "eslint": "^4.11.0",
+    "husky": "^0.14.3",
     "mocha": "^4.0.1",
     "supertest": "^3.0.0"
   }

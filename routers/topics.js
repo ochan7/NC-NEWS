@@ -5,4 +5,5 @@ router.route('/')
   .get(getAllTopics);
 router.route('/:topic/articles')
   .get(getArticlesByTopic);
+  
 module.exports = router;

@@ -6,6 +6,7 @@ const {
   postComment, 
   putArticle
 } = require('../controllers');
+
 router.route('/')
   .get(getAllArticles);
 router.route('/:article_id')
@@ -14,4 +15,5 @@ router.route('/:article_id')
 router.route('/:article_id/comments')
   .get(getComments)
   .post(postComment);
+  
 module.exports = router;
