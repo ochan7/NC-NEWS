@@ -15,6 +15,9 @@ describe('API', () => {
       })
       .catch(err => console.log('error!', err));
   });
+  after(() => {
+    mongoose.disconnect();
+  });
   describe('GET api', () => {
     it('returns with a status code of 200', () => {
       return request(app)
@@ -40,7 +43,7 @@ describe('API', () => {
           const {articles} = res.body;
           expect(articles).to.be.an('array');
           expect(articles[0].title).to.be.a('string');
-          expect(articles.length).to.equal(2);
+          expect(articles.length).to.equal(usefulData.articles.length);
         });
     });
   });
@@ -52,6 +55,7 @@ describe('API', () => {
         .expect(200)
         .then(({body: {article}}) => {
           expect(article).to.be.an('object');
+          expect(article.title).to.equal(usefulData.articles[0].title);
         });
     });
     it('returns with a 404 if given article id is not found', () => {
@@ -190,7 +194,7 @@ describe('API', () => {
         .then(({body}) => {
           const {topics} = body;
           expect(topics).to.be.an('array');
-          expect(topics.length).to.equal(3);
+          expect(topics.length).to.equal(usefulData.topics.length);
         });
     });
   });
