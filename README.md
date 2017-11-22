@@ -1,6 +1,6 @@
 # Northcoders News BE
 
-This project is for creating an API for a reddit style news website using [Express](https://expressjs.com/) and [MongoDB](https://www.mongodb.com/)
+This project is for creating an API for a reddit style news website using [Express](https://expressjs.com/) and [MongoDB](https://www.mongodb.com/). Here is a link to see the deployed version of the project https://olie-chan-nc-news.herokuapp.com/.
 
 ## Getting Started
 
@@ -41,7 +41,11 @@ then navigate into the folder and run
 ```
 npm install
 ```
-To populate the database, run 
+In a separate terminal run the following command to connect to the database and keep it running when running the server
+```
+mongod
+```
+then to populate the databse run 
 ```
 node seed/seed.js
 ```
